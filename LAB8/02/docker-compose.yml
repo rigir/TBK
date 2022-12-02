@@ -1,0 +1,35 @@
+version: "3.9"
+services:
+  accesslog:
+    image: diamol/ch09-access-log
+    deploy:
+      replicas: 3
+      resources:
+        limits:
+          cpus: '0.01'
+          memory: 100M
+
+  iotd:
+    image: diamol/ch09-image-of-the-day
+    ports:
+      - "8088:80"
+    deploy:
+      replicas: 5
+      resources:
+        limits:
+          cpus: '0.01'
+          memory: 100M
+
+  image-gallery:
+    image: diamol/ch09-image-gallery
+    ports:
+      - "80:80"
+    depends_on:
+      - accesslog
+      - iotd
+    deploy:
+      replicas: 2
+      resources:
+        limits:
+          cpus: '0.01'
+          memory: 100M
