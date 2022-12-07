@@ -1,0 +1,25 @@
+version: "3.8"
+services:
+  app:
+    image: node:alpine
+    working_dir: /app
+    volumes:
+      - ./src:/app
+    command: node memory-hog.js
+    environment:
+      - MAX_ALLOCATION_MB=4096
+      - LOOP_ALLOCATION_MB=512
+      - LOOP_INTERVAL_MS=2000
+    deploy:
+      replicas: 1
+      update_config:
+        parallelism: 2
+        delay: 10s
+        monitor: 10s
+        failure_action: rollback
+    healthcheck:
+      test: [ "CMD", "node", "memory-check.js" ]
+      interval: 1s
+      timeout: 1s
+      retries: 2
+      start_period: 5s
