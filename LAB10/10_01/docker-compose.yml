@@ -1,0 +1,25 @@
+version: "3.8"
+services:
+  todo-list:
+    container_name: todo-list
+    image: diamol/ch09-todo-list
+    ports:
+      - "8050:80"
+
+  prometheus:
+    container_name: prometheus
+    build:
+      context: "./services/prometheus"
+      dockerfile: Dockerfile
+    ports:
+      - "9090:9090"
+
+  grafana:
+    container_name: grafana
+    build:
+      context: "./services/grafana"
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    depends_on:
+      - prometheus

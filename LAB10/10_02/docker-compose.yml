@@ -1,0 +1,28 @@
+version: "3.8"
+services:
+  backend:
+    container_name: backend
+    build:
+      context: "./services/backend"
+      dockerfile: Dockerfile
+      network: host
+    ports:
+      - "8080:3001"
+
+  prometheus:
+    container_name: prometheus
+    build:
+      context: "./services/prometheus"
+      dockerfile: Dockerfile
+    ports:
+      - "9090:9090"
+
+  grafana:
+    container_name: grafana
+    build:
+      context: "./services/grafana"
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    depends_on:
+      - prometheus
